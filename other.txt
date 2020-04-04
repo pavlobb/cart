@@ -1,0 +1,7 @@
+https://ant.design/
+https://reacttraining.com/react-router/web/guides/quick-start
+npm install --save react-card-flip
+
+useEffect - для отримання товарів одираз запрос
+
+styled components sass less  styled-components.com
