@@ -39,10 +39,7 @@ export const ProductList = () => {
 <Card el={element} />
   </Col>
     )
-    return (
-        
-     
-    
+    return (   
       <Row justify="space-around">
           { data.map(el => renderCards(el)) }
           </Row>
