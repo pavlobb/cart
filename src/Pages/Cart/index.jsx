@@ -35,11 +35,15 @@ export const Cart = () => {
 
 
 
-   const addItem = (store, index, storage ) => {
+   const addItem = store => {
    
     
- addCartItems([...cartItems, {  ...store, count: 1}]);
-   console.log(cartItems, storage[index].id);
+ 
+ const fndx = cartItems.findIndex(e => e.id === store.id);
+ console.log(cartItems, 'fndx',fndx)
+ if (fndx === -1) {
+    addCartItems([...cartItems, {  ...store, count: 1}]);
+ }
    
 
 }
@@ -67,7 +71,7 @@ export const Cart = () => {
          <tr id={index}>  
             <th >{store.name}</th>
             <th >{store.price}</th>
-            <th ><Button onClick={e => addItem(store, index, storage)} type="primary">+</Button></th>
+            <th ><Button onClick={e => addItem(store)} type="primary">+</Button></th>
         </tr>
             ) )}     
        </tbody>
