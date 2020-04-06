@@ -14,7 +14,7 @@ export const CartItemForm = ({cartItem}) => {
    <td >{cartItem.id}</td>
             <td >{cartItem.name}</td>
             <th ><Button type="primary"danger>-</Button><Button type="primary">+</Button></th>
-            <th >{cartItem.quantity}</th>
+            <th >{cartItem.count}</th>
             <th >{cartItem.price}$</th>
         </tr>
         
