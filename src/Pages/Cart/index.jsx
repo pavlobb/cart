@@ -1,9 +1,9 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 //import {CartItemForm}  from './CartItemForm';
 import { Button } from 'antd';
 //import {StorageForm} from './StorageForm';
 import './index.css';
-import { StaticRouter } from 'react-router-dom';
+
 
 
 const storage = [
@@ -17,7 +17,8 @@ const storage = [
         id: 2,
         name: 'jacket',
         count: 0,
-        price: 20
+        price: 20,
+        
     },
     {
         id: 3,
@@ -29,37 +30,54 @@ const storage = [
 ];
 export const Cart = () => {
 
-  const [cartItems, addCartItems] = useState([]);
-  console.log(cartItems);
+    const [cartItems, addCartItems] = useState([]);
+    console.log(cartItems);
+
+
+
+
+
+    const addItem = items => {
+
+
+
+        const fndx = cartItems.findIndex(e => e.id === items.id);
+
+        if (fndx === -1) {
+            addCartItems([...cartItems, { ...items, count: 1, total: items.price }]);
+
+
+        } else {
+
+            const aaddartItems = cartItems.map(cartItem => {
+                if (cartItem.id === items.id) {
+                    cartItem.total = cartItem.total + cartItem.price
+                    cartItem.count++;
+
+                }
+                return cartItem
+            })
+            addCartItems(aaddartItems);
+        }
+
+    }
+
+    const dcmItems = items => {
+        const aaddartItems = cartItems.map(cartItem => {
+           
+            if (cartItem.id === items.id && cartItem.count >= 2 ) {
+
+                cartItem.total = cartItem.total - cartItem.price
+                    cartItem.count--;
+                console.log(items.price);
+                
+
+            }
+            return cartItem
+        })
+        addCartItems(aaddartItems);
+    }
     
-
-
-
-
-   const addItem = store => {
-   
-    
- 
- const fndx = cartItems.findIndex(e => e.id === store.id);
- //console.log(cartItems, 'fndx',fndx)
- if (fndx === -1) {
-    addCartItems([...cartItems, {  ...store, count: 1}]);
-    console.log( 'cart', cartItems);
-
- }else {
-      
-     const aaddartItems = cartItems.map(cartItem => {
-         if(cartItem.id === store.id) {
-         cartItem.price = cartItem.price + store.price
-             cartItem.count++;
-             
-         }
-              return cartItem    
-    })
-    addCartItems(aaddartItems);
- }
-
-   }
 
 
 
@@ -68,32 +86,37 @@ export const Cart = () => {
 
 
     return (<div className="container">
-    
-    <h1>Товар</h1>
-     <table className="table">
-         <thead>
-                <tr>     
-                    <th >Название товару</th> 
+
+        <h1>Товар</h1>
+        <table className="table">
+            <thead>
+                <tr>
+                    <th >Название товару</th>
                     <th >Цена</th>
                     <th >Добавить</th>
                 </tr>
-                </thead> 
-                <tbody >     
-            {storage.map((store, index) =>(
-            
-            
-         <tr id={index}>  
-            <th >{store.name}</th>
-            <th >{store.price}</th>
-            <th ><Button onClick={e => addItem(store, index)} type="primary">Добавити</Button></th>
-        </tr>
-            ) )}     
-       </tbody>
-       </table>
+            </thead>
+            <tbody >
+                {storage.map((store, index) => {
+                    return (
+                        <tr id={index}>
+                            <th >{store.name}</th>
+                            <th >{store.price}</th>
+                            <th >
+                                <Button onClick={e => 
+                                addItem(store, index)} type="primary">
+                                    Добавити
+                                    </Button>
+                                    </th>
+                        </tr>
+                    )
+                })}
+            </tbody>
+        </table>
 
-       <h1 className="text">Корзина</h1>
+        <h1 className="text">Корзина</h1>
         <table className="table">
-         <thead>
+            <thead>
                 <tr>
                     <th>id</th>
                     <th >Название товару</th>
@@ -101,22 +124,30 @@ export const Cart = () => {
                     <th >Количество</th>
                     <th >Цена</th>
                 </tr>
-                </thead>
-                <tbody >
-                {cartItems.map((cartItem, index) => ( 
-            
-              <tr id={ index} >
-        <th>{cartItem.id}</th>
-            <th >{cartItem.name}</th>
-            <th ><Button type="primary"danger>-</Button><Button type="primary">+</Button></th>
-            <th >{cartItem.count}</th>
-            <th >{cartItem.price}$</th>
-        </tr>
-       
-        ))}
+            </thead>
+            <tbody >
+                {cartItems.map((cartItem, index) => {
+                    return (
 
-            </tbody>     
-         </table>
+                        <tr id={index} >
+                            <th>{cartItem.id}</th>
+                            <th >{cartItem.name}</th>
+                            <th ><Button onClick={e => dcmItems(cartItem)} type="primary" danger>
+                                -
+                                </Button >
+
+                                <Button onClick={e => addItem(cartItem)} type="primary">
+                                    +
+                                    </Button></th>
+                            <th >{cartItem.count}</th>
+                            <th >{cartItem.total}$</th>
+                        </tr>
+
+                    )
+                })}
+
+            </tbody>
+        </table>
 
 
     </div>)
