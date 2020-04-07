@@ -3,6 +3,7 @@ import React, { useState, Fragment } from 'react';
 import { Button } from 'antd';
 //import {StorageForm} from './StorageForm';
 import './index.css';
+import { StaticRouter } from 'react-router-dom';
 
 
 const storage = [
@@ -40,13 +41,26 @@ export const Cart = () => {
     
  
  const fndx = cartItems.findIndex(e => e.id === store.id);
- console.log(cartItems, 'fndx',fndx)
+ //console.log(cartItems, 'fndx',fndx)
  if (fndx === -1) {
     addCartItems([...cartItems, {  ...store, count: 1}]);
- }
-   
+    console.log( 'cart', cartItems);
 
-}
+ }else {
+      
+     const aaddartItems = cartItems.map(cartItem => {
+         if(cartItem.id === store.id) {
+         cartItem.price = cartItem.price + store.price
+             cartItem.count++;
+             
+         }
+              return cartItem    
+    })
+    addCartItems(aaddartItems);
+ }
+
+   }
+
 
 
 
@@ -71,7 +85,7 @@ export const Cart = () => {
          <tr id={index}>  
             <th >{store.name}</th>
             <th >{store.price}</th>
-            <th ><Button onClick={e => addItem(store)} type="primary">+</Button></th>
+            <th ><Button onClick={e => addItem(store, index)} type="primary">Добавити</Button></th>
         </tr>
             ) )}     
        </tbody>
