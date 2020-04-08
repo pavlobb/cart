@@ -5,7 +5,6 @@ import { Button } from 'antd';
 import './index.css';
 
 
-
 const storage = [
     {
         id: 1,
@@ -18,7 +17,7 @@ const storage = [
         name: 'jacket',
         count: 0,
         price: 20,
-        
+
     },
     {
         id: 3,
@@ -31,14 +30,8 @@ const storage = [
 export const Cart = () => {
 
     const [cartItems, addCartItems] = useState([]);
-    console.log(cartItems);
-
-
-
-
 
     const addItem = items => {
-
 
 
         const fndx = cartItems.findIndex(e => e.id === items.id);
@@ -64,26 +57,27 @@ export const Cart = () => {
 
     const dcmItems = items => {
         const aaddartItems = cartItems.map(cartItem => {
-           
-            if (cartItem.id === items.id && cartItem.count >= 2 ) {
+
+            if (cartItem.id === items.id && cartItem.count >= 2) {
 
                 cartItem.total = cartItem.total - cartItem.price
-                    cartItem.count--;
-                console.log(items.price);
-                
-
+                cartItem.count--;
             }
             return cartItem
         })
         addCartItems(aaddartItems);
     }
-    
 
+    const removeFileItem = id => {
+        const remove = cartItems.filter(cartItem => cartItem.id !== id
 
+        )
+        addCartItems(remove);
 
+    }
 
-
-
+    const sum = cartItems.reduce((sum, count) => sum + count.count, 0);
+    const sumPrice = cartItems.reduce((sum, count) => sum + count.price * count.count, 0);
 
     return (<div className="container">
 
@@ -103,11 +97,11 @@ export const Cart = () => {
                             <th >{store.name}</th>
                             <th >{store.price}</th>
                             <th >
-                                <Button onClick={e => 
-                                addItem(store, index)} type="primary">
+                                <Button onClick={e =>
+                                    addItem(store, index)} type="primary">
                                     Добавити
                                     </Button>
-                                    </th>
+                            </th>
                         </tr>
                     )
                 })}
@@ -118,7 +112,7 @@ export const Cart = () => {
         <table className="table">
             <thead>
                 <tr>
-                    <th>id</th>
+                    <th></th>
                     <th >Название товару</th>
                     <th ></th>
                     <th >Количество</th>
@@ -130,7 +124,11 @@ export const Cart = () => {
                     return (
 
                         <tr id={index} >
-                            <th>{cartItem.id}</th>
+                            <th >
+                                <Button onClick={e => removeFileItem(cartItem.id)} type="primary" danger>
+                                    x
+                                </Button >
+                            </th>
                             <th >{cartItem.name}</th>
                             <th ><Button onClick={e => dcmItems(cartItem)} type="primary" danger>
                                 -
@@ -145,10 +143,15 @@ export const Cart = () => {
 
                     )
                 })}
-
+                <tr>
+                    <th></th>
+                    <th >Общая сума</th>
+                    <th ></th>
+                    <th >{sum}</th>
+                    <th >{sumPrice}$</th>
+                </tr>
             </tbody>
         </table>
-
 
     </div>)
 }
